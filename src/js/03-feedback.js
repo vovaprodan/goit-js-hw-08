@@ -1,3 +1,5 @@
+import throttle from 'lodash.throttle';
+
 const formEl = document.querySelector('.feedback-form');
 formEl.addEventListener('input', onInputForm)
 
@@ -34,3 +36,5 @@ formEl.addEventListener('submit', (event) => {
 
     event.preventDefault();
 });
+throttle(function(e) {
+    timeCheck += 1},500)
