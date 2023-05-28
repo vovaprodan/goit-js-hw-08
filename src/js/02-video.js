@@ -1,8 +1,11 @@
 import Player from '@vimeo/player'
+import throttle from 'lodash.throttle';
+
+
 const iframe = document.querySelector('iframe');
-
-
-    const player = new Player(iframe);
+const player = new Player(iframe);
+const time = localStorage.getItem("videoplayer-current-time")
+let timeCheck = 0;
 
     player.on('play', function() {
         console.log('played the video!');
@@ -12,21 +15,12 @@ const iframe = document.querySelector('iframe');
         console.log('title:', title);
     });
 
-//     const onPlay = function(data) {
-//    console.log( 'час');
-// };
-
-// player.on('timeupdate', onPlay);
-
-// localStorage.setItem("videoplayer-current-time", JSON.stringify(player.on('timeupdate', onPlay)))
 player.on('timeupdate', function(data) {
   const currentTime = data.seconds;
   localStorage.setItem("videoplayer-current-time", currentTime);
 });
 
-player.setCurrentTime(second).then(function(seconds) {
-    const second = localStorage.getItem("videoplayer-current-time");
-    console.log(second)
+player.setCurrentTime(time).then(function(seconds) {
 }).catch(function(error) {
     switch (error.name) {
         case 'RangeError':
@@ -38,3 +32,7 @@ player.setCurrentTime(second).then(function(seconds) {
             break;
     }
 });
+
+
+throttle(function(e) {
+    timeCheck += 1},1000)
