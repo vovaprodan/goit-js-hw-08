@@ -1,8 +1,8 @@
 const formEl = document.querySelector('.feedback-form');
 formEl.addEventListener('input', onInputForm)
 
-const emailValue = document.querySelector('input[name="email"]').value;
-const messageValue = document.querySelector('textarea[name="message"]').value;
+const emailInput = document.querySelector('input[name="email"]');
+const messageInput = document.querySelector('textarea[name="message"]');
 
 function onInputForm(evt) {
    
@@ -18,19 +18,19 @@ window.addEventListener('load', () => {
     const feedbackFormState = JSON.parse(localStorage.getItem('feedback-form-state'));
 
     if (feedbackFormState) {
-      
-        emailValue = feedbackFormState.email;
-        messageValue = feedbackFormState.message;
+        // заповнюємо поля форми переданими з сховища значеннями
+        emailInput.value = feedbackFormState.email;
+        messageInput.value = feedbackFormState.message;
     }
 });
 formEl.addEventListener('submit', (event) => {
    
     localStorage.removeItem('feedback-form-state');
+      emailInput.value = '';
+     messageInput.value = '';
 
-    event.currentTarget.reset();
-
-    console.log(emailValue)
-   
+    const formData = { email: emailInput.value, message: messageInput.value };
+    console.log(formData);
 
     event.preventDefault();
 });
