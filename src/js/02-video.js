@@ -5,7 +5,6 @@ import throttle from 'lodash.throttle';
 const iframe = document.querySelector('iframe');
 const player = new Player(iframe);
 const time = localStorage.getItem("videoplayer-current-time")
-let timeCheck = 0;
 
     player.on('play', function() {
         console.log('played the video!');
@@ -15,10 +14,12 @@ let timeCheck = 0;
         console.log('title:', title);
     });
 
-player.on('timeupdate', function(data) {
-  const currentTime = data.seconds;
+player.on('timeupdate', throttle(timeCheck,1000));
+
+function timeCheck(data) {
+    const currentTime = data.seconds;
   localStorage.setItem("videoplayer-current-time", currentTime);
-});
+}
 
 player.setCurrentTime(time).then(function(seconds) {
 }).catch(function(error) {
@@ -32,7 +33,3 @@ player.setCurrentTime(time).then(function(seconds) {
             break;
     }
 });
-
-
-throttle(function(e) {
-    timeCheck += 1},1000)
